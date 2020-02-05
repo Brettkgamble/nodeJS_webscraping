@@ -9,8 +9,16 @@ async function main() {
 
     const html = await page.content();
     const $ = cheerio.load(html);
-    // $(".result-title").each((index, element) => console.log($(element).text()))
-    $(".result-title").each((index, element) => console.log($(element).attr("href")))
+    const results = $(".result-info")
+        .map((index, element) => {
+            const titleElement = $(element).find(".result-title");
+            const timeElement = $(element).find(".result-date");
+            const title = $(titleElement).text();
+            const url = $(titleElement).attr("href");
+            const datePosted = new Date($(timeElement).attr("datetime"));
+            return { title, url, datePosted};
+    }).get();
+    console.log(results);
 }
 
 
